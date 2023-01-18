@@ -1,7 +1,9 @@
 use configparser::ini::Ini;
 use iced::alignment;
 use iced::theme;
+use iced::theme::PickList;
 use iced::widget::button;
+use iced::widget::pick_list;
 use iced::widget::scrollable::Scrollable;
 use iced::widget::{
     checkbox, column, container, horizontal_space, image, radio, row, scrollable, slider, text,
@@ -10,13 +12,12 @@ use iced::widget::{
 use iced::widget::{Button, Column, Container, Slider};
 use iced::window::icon;
 use iced::window::Icon;
+use iced::Alignment;
 use iced::{Color, Element, Length, Renderer, Sandbox, Settings};
 use std::env;
 use std::fs;
 use std::path;
 use std::path::Path;
-use std::str;
-use std::string;
 fn main() -> iced::Result {
     Clipboard::run(Settings {
         id: None,
@@ -70,6 +71,7 @@ impl Sandbox for Clipboard {
     }
 
     fn update(&mut self, message: Message) {
+
         let mut config = Ini::new();
         config.load("config.ini");
         match message {
@@ -80,20 +82,33 @@ impl Sandbox for Clipboard {
                 self.temp -= 1;
             }
         }
-        config.set(
-            "Temp",
-            "temp",
-            Some(self.temp.to_string()),
-        );
+        config.set("Temp", "temp", Some(self.temp.to_string()));
         config.write("config.ini");
     }
 
     fn view(&self) -> Element<Message> {
-        let button1 = button("Increase").on_press(Message::Increase);
-        let button2 = button("Decrease").on_press(Message::Decrease);
-        column![button1, text(self.temp).size(50), button2]
+        let mut list = column![];
+        let button1 = Container::new(
+            button(text("Increase").horizontal_alignment(alignment::Horizontal::Center))
+                .on_press(Message::Increase),
+        )
+        .width(Length::Fill)
+        .padding(5);
+        let button2 = Container::new(
+            button(text("Decrease").horizontal_alignment(alignment::Horizontal::Center))
+                .on_press(Message::Decrease),
+        )
+        .width(Length::Fill)
+        .padding(5);
+
+        list = list.push(button1);
+        list = list.push(button2);
+        //column![button1, text(self.temp).size(50), button2]
+        column![list, text(self.temp).size(50)]
             .padding(20)
+            .spacing(20)
             .align_items(iced::Alignment::Center)
+            .width(Length::Fill)
             .into()
     }
 
