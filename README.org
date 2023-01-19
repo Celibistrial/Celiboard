@@ -26,4 +26,4 @@ The binary would be found in target
 Feel free to make a pull request adding new features or improving the code
 
 * License
-This project is licensed under the AGPL-3.0 License
+This project is licensed under the AGPL-3.0 License -- for more details see [[file:LICENSE.md][this]]
