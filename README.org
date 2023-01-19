@@ -29,7 +29,7 @@ With rust installed simply run
 
 The binary would be found in target
 
-* To Implement
+* TODO:
 : Add support for rendering emojis in the clipboard GUI
 
 : Add support for images
