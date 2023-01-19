@@ -31,9 +31,13 @@ The binary would be found in target
 
 * To Implement
 : Add support for rendering emojis in the clipboard GUI
+
 : Add support for images
+
 : Add an option to encrypt items which may be passwords
+
 : Make the GUI pop up near the cursor and paste automatically (just like the windows clipboard manager)
+
 
 
 * Contributing
