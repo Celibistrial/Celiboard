@@ -12,11 +12,14 @@ These instructions will get you a copy of the project up and running on your loc
 Rust must be installed
 ** Setup
 Clone the repo
+
 ~git clone https://github.com/Celibistrial/Celiboard.git~
 
 * Building
 With rust installed simply run
+
 ~cargo build~
+
 The binary would be found in target
 
 * Contributing
