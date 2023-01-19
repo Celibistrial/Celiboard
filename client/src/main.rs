@@ -18,6 +18,7 @@ use std::env;
 use std::fs;
 use std::path;
 use std::path::Path;
+use std::process::exit;
 fn main() -> iced::Result {
     Clipboard::run(Settings {
         id: None,
@@ -44,26 +45,31 @@ fn main() -> iced::Result {
 }
 #[derive(Debug, Clone)]
 enum Message {
-    Increase,
-    Decrease,
+    Cp(String),
 }
 struct Clipboard {
-    temp: u8,
+    cp_status: bool,
+    cp_data: String,
+    history: String,
 }
 impl Sandbox for Clipboard {
     type Message = Message;
 
     fn new() -> Self {
-        if !Path::new("config.ini").exists() {
-            let mut config = Ini::new();
-            config.set("Temp", "temp", Some(String::from("20")));
-            config.write("config.ini");
+        if !Path::new("clip_history").exists() {
+            println!("Please start daemon first");
+            exit(404);
         }
         let mut config = Ini::new();
-        config.load("config.ini");
-        let tmp = config.get("Temp", "temp").unwrap();
-        let tmp: u8 = tmp.trim().parse().unwrap();
-        Clipboard { temp: tmp }
+        config.load("clip_history");
+        Clipboard {
+            cp_data: config.get("Clipboard", "cpData").unwrap(),
+            cp_status: config
+                .getboolcoerce("Clipboard", "cpStatus")
+                .unwrap()
+                .unwrap(),
+            history: config.get("Clipboard", "history").unwrap(),
+        }
     }
 
     fn title(&self) -> String {
@@ -71,41 +77,47 @@ impl Sandbox for Clipboard {
     }
 
     fn update(&mut self, message: Message) {
-
         let mut config = Ini::new();
-        config.load("config.ini");
+        config.load("clip_history");
         match message {
-            Message::Increase => {
-                self.temp += 1;
-            }
-            Message::Decrease => {
-                self.temp -= 1;
+            Message::Cp(s) => {
+                let mut config = Ini::new();
+                config.load("clip_history");
+                config.set("Clipboard", "cpData", Some(s));
+                config.set("Clipboard", "cpStatus", Some("1".to_string()));
+                config.write("clip_history");
+                exit(0);
             }
         }
-        config.set("Temp", "temp", Some(self.temp.to_string()));
-        config.write("config.ini");
     }
 
     fn view(&self) -> Element<Message> {
+        let mut config = Ini::new();
+        config.load("clip_history");
         let mut list = column![];
-        let button1 = Container::new(
-            button(text("Increase").horizontal_alignment(alignment::Horizontal::Center))
-                .on_press(Message::Increase),
-        )
-        .width(Length::Fill)
-        .padding(5);
-        let button2 = Container::new(
-            button(text("Decrease").horizontal_alignment(alignment::Horizontal::Center))
-                .on_press(Message::Decrease),
-        )
-        .width(Length::Fill)
-        .padding(5);
-
-        list = list.push(button1);
-        list = list.push(button2);
-        //column![button1, text(self.temp).size(50), button2]
-        column![list, text(self.temp).size(50)]
-            .padding(20)
+        let data = config.get("Clipboard", "history").unwrap();
+        let mut list_data: Vec<String> = data
+            .split(" (MADE_BY_CELIBISTRIAL) ")
+            .map(|s| s.to_string())
+            .collect();
+        list_data.reverse();
+        println!("{:?}", list_data);
+        for i in list_data {
+            list = list.push(button(text(i.clone())).on_press(Message::Cp(i)));
+        }
+        //        let button1 = Container::new(
+        //            button(text("Increase").horizontal_alignment(alignment::Horizontal::Center))
+        //                .on_press(Message::Increase),
+        //        )
+        //        .width(Length::Fill)
+        //        .padding(5);
+        //       column![list, text(self.temp).size(50)]
+        //            .padding(20)
+        //            .spacing(20)
+        //            .align_items(iced::Alignment::Center)
+        //            .width(Length::Fill)
+        //            .into()
+        list.padding(20)
             .spacing(20)
             .align_items(iced::Alignment::Center)
             .width(Length::Fill)
