@@ -6,6 +6,13 @@ A clipboard manager for linux which is designed to replace windows clipboard man
 Since the project is still in early development no pre-compiled binaries are available
 To use it see Building
 
+* Usage
+Run ~daemon~ in the background
+
+~./daemon &~
+
+Then bind ~client~ to a keybind using your WM config
+
 * Getting Started (Developing)
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 ** Prerequisites
