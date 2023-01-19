@@ -14,9 +14,9 @@ fn main() {
         config.write("clip_history");
         println!("Clipboard made");
     }
-    config.load("clip_history");
 
     loop {
+        config.load("clip_history");
         if last_clip != clipboard.get_contents().unwrap() {
             let new_clip = config.get("Clipboard", "history").unwrap()
                 + " (MADE_BY_CELIBISTRIAL) "
@@ -25,12 +25,9 @@ fn main() {
             last_clip = clipboard.get_contents().unwrap();
             config.write("clip_history");
         }
-        if config
-            .getboolcoerce("Clipboard", "cpStatus")
-            .unwrap()
-            .unwrap()
-        {
+        if config.get("Clipboard", "cpStatus").unwrap() == "1".to_string() {
             config.set("Clipboard", "cpStatus", Some("0".to_string()));
+            config.write("clip_history");
             clipboard.set_contents(config.get("Clipboard", "cpData").unwrap());
         }
     }
