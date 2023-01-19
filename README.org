@@ -29,6 +29,13 @@ With rust installed simply run
 
 The binary would be found in target
 
+* TODO
+** TODO: Add support for rendering emojis in the clipboard GUI
+** TODO: Add support for images
+** TODO: Add an option to encrypt items which may be passwords
+** TODO: Make the GUI pop up near the cursor and paste automatically (just like the windows clipboard manager)
+
+
 * Contributing
 Feel free to make a pull request adding new features or improving the code
 
