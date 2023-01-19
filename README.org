@@ -1,0 +1,26 @@
+#+title: README
+* Celibar
+A clipboard manager for linux which is designed to replace windows clipboard manager
+
+* Installation
+Since the project is still in early development no pre-compiled binaries are available
+To use it see Building
+
+* Getting Started (Developing)
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+** Prerequisites
+Rust must be installed
+** Setup
+Clone the repo
+~git clone https://github.com/Celibistrial/Celiboard.git~
+
+* Building
+With rust installed simply run
+~cargo build~
+The binary would be found in target
+
+* Contributing
+Feel free to make a pull request adding new features or improving the code
+
+* License
+This project is licensed under the AGPL-3.0 License
