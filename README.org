@@ -1,5 +1,5 @@
 #+title: README
-* Celibar
+* Celiboard
 A clipboard manager for linux which is designed to replace windows clipboard manager
 
 Should work similar to greenclip and clippy 
