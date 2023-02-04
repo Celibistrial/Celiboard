@@ -101,7 +101,6 @@ impl Sandbox for Clipboard {
             .map(|s| s.to_string())
             .collect();
         list_data.reverse();
-        println!("{:?}", list_data);
         for i in list_data {
             list = list.push(button(text(i.clone())).on_press(Message::Cp(i)));
         }
